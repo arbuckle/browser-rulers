@@ -15,12 +15,13 @@ Chrome: download the repository to a folder and install it as an extension
 Firefox: rulers.js will work as a Greasemonkey user script
 
 IE:  rulers.js works as a bookmarklet (i recommend hosting the script yourself):  
+```javascript
     javascript:void(function(scriptSrc){
         var script=document.createElement('script');
         script.src=scriptSrc;script.type='text/javascript';
         document.head.appendChild(script);
     }('http://catto5k.com/a/rulers.js'));
-
+```
 Features:
 ---------
 - Tested and working in IE9, Chrome, Firefox.
