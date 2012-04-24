@@ -9,7 +9,9 @@ This is a script that adds rulers to the X and Y axis of the browser, from which
 How To Install?
 ---------------
 Chrome: download the repository to a folder and install it as an extension
+
 Firefox: rulers.js will work as a Greasemonkey user script
+
 IE:  rulers.js can probably be implemeneted as a bookmarklet:  javascript: (function(){/*rulers.js content*/})();
 
 Features:
