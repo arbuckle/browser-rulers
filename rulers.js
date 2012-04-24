@@ -15,8 +15,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // ==UserScript==
 // @name           browser-rulers
 // @description    Be your designer's best friend. Rulers and guides for the browser. Works anywhere <canvas> does.
-// @include        http://*/*
-// @include        https://*/*
+// @include        http://*
+// @include        https://*
 // ==/UserScript==
 
 var guides = {
@@ -263,7 +263,6 @@ var guides = {
 		}
 	},
 	guideDragStop: function(event){
-		console.log(guides.activeGuidesHorizontal);
 		if (guides.dragging) {
 			guides.dragging = false;
 			if (guides.dragType === 'horizontal' && event.clientY > 20 && event.clientX > 20) {
