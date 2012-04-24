@@ -1,7 +1,16 @@
 browser-rulers
 ==============
-
 Be your designer&#39;s best friend.  Rulers and guides for the browser.  Works anywhere &lt;canvas&gt; does.
+
+What does it do?
+----------------
+This is a script that adds rulers to the X and Y axis of the browser, from which guides can be dragged to overlay page elements.  Useful for ensuring that your HTML and CSS matches up to whatever mockup you're working from.  Guides save themselves in the URL as you create them, so you can view them in multiple browsers effortlessly.
+
+How To Install?
+---------------
+Chrome: download the repository to a folder and install it as an extension
+Firefox: rulers.js will work as a Greasemonkey user script
+IE:  rulers.js can probably be implemeneted as a bookmarklet:  javascript: (function(){/*rulers.js content*/})();
 
 Features:
 ---------
