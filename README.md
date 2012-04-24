@@ -12,7 +12,12 @@ Chrome: download the repository to a folder and install it as an extension
 
 Firefox: rulers.js will work as a Greasemonkey user script
 
-IE:  rulers.js can probably be implemeneted as a bookmarklet:  javascript: (function(){/*rulers.js content*/})();
+IE:  rulers.js works as a bookmarklet (i recommend hosting the script yourself):  
+  javascript:void(function(scriptSrc){
+    var script=document.createElement('script');
+    script.src=scriptSrc;script.type='text/javascript';
+    document.head.appendChild(script);
+  }('http://catto5k.com/a/rulers.js'));
 
 Features:
 ---------
@@ -24,4 +29,3 @@ Features:
 - Drag a guide back to the ruler to delete it.
 - Guide positions saved in URL hash (so you can set once, view anywhere)
 - Guides can be cleared all at once. (just push the red button!)
-
