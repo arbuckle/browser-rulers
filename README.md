@@ -4,7 +4,7 @@ Be your designer&#39;s best friend.  Rulers and guides for the browser.  Works a
 
 What does it do?
 ----------------
-[Imgur](http://i.imgur.com/7ozfe.jpg)
+[Screenshot](http://i.imgur.com/7ozfe.jpg)
 
 This is a script that adds rulers to the X and Y axis of the browser, from which guides can be dragged to overlay page elements.  Useful for ensuring that your HTML and CSS matches up to whatever mockup you're working from.  Guides save themselves in the URL as you create them, so you can view them in multiple browsers effortlessly.
 
