@@ -38,13 +38,13 @@ var guides = {
 		this.createCanvas();
 		this.createControlPanel();
 		this.drawRuler();
+		this.restorePreviousGuides();
 
 		document.addEventListener('scroll', this.scrollHandler, false);
 		document.addEventListener('mousemove', this.mousePositionHandler, false);
 		document.addEventListener('mousemove', this.guideDragHandler, false);
 		document.addEventListener('mousedown', this.guideDragStart, false);
 		document.addEventListener('mouseup', this.guideDragStop, false);
-		window.addEventListener('load', this.restorePreviousGuides, false);
 
 		this.cpToggle.addEventListener('click', this.handleControlPanel, false);
 		this.cpClearAll.addEventListener('click', this.handleControlPanel, false);
@@ -113,12 +113,12 @@ var guides = {
 		l_horizontals = horizontals.length;
 
 		for (i = 1; i < l_verticals; i ++) {
-			guides.activeGuidesVertical.push(Number(verticals[i]));
+			this.activeGuidesVertical.push(Number(verticals[i]));
 		}
 		for (i = 1; i < l_horizontals; i ++) {
-			guides.activeGuidesHorizontal.push(Number(horizontals[i]));
+			this.activeGuidesHorizontal.push(Number(horizontals[i]));
 		}
-		guides.redrawAll();
+		this.redrawAll();
 	},
 	drawGuide: function(position, axis) {
 		this.context.beginPath();
