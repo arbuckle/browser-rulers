@@ -284,6 +284,10 @@ var guides = {
 		guides.redrawAll();
 	},
 	guideDragStart: function(event) {
+		if (guides.canvas.style.display === 'none') {
+			return;
+		}
+
 		var x, y, vertical, horizontal;
 
 		x = event.pageX;
