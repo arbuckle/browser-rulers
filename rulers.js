@@ -22,8 +22,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 var guides = {
 	canvas: null,
 	context: null,
+	isVisible: false,
 	cpToggle: null,
 	cpClearAll: null,
+	cpNewGuide: null,
 	activeGuidesHorizontal: [],
 	activeGuidesVertical: [],
 	mouseInterval: null,
@@ -48,6 +50,7 @@ var guides = {
 
 		this.cpToggle.addEventListener('click', this.handleControlPanel, false);
 		this.cpClearAll.addEventListener('click', this.handleControlPanel, false);
+		this.cpNewGuide.addEventListener('click', this.handleControlPanel, false);
 	},
 	calculateCanvasDimensions: function() {
 		/*http://stackoverflow.com/questions/1145850/get-height-of-entire-document-with-javascript*/
@@ -63,7 +66,8 @@ var guides = {
 	createControlPanel: function() {
 		var style = document.createElement('style');
 		style.innerHTML =	"#GuideToggle {position: fixed; top: 0; left: 0; width: 20px; height: 20px; background-color: #5e5e5e; z-index: 1000;}" +
-							"#GuideClearAll {display:none; position: fixed; top: 0; right: 0; width: 20px; height: 20px; background-color: rgba(255, 0, 0, 0.75); z-index: 1000;}";
+							"#GuideClearAll {display:none; position: fixed; top: 0; right: 0; width: 20px; height: 20px; background-color: rgba(255, 0, 0, 0.75); z-index: 1000;}" +
+							"#GuideNew {display:none; position: fixed; bottom: 0; left: 0; width: 20px; height: 20px; background-color: rgba(37, 207, 42, 0.75); z-index: 1000;}";
 		document.body.appendChild(style);
 
 		this.cpToggle = document.createElement('div');
@@ -75,6 +79,12 @@ var guides = {
 		this.cpClearAll.id = "GuideClearAll";
 		this.cpClearAll.title = "Clear all guides";
 		document.body.appendChild(this.cpClearAll);
+
+		this.cpNewGuide = document.createElement('div');
+		this.cpNewGuide.id = "GuideNew";
+		this.cpNewGuide.title = "Create a new guide";
+		document.body.appendChild(this.cpNewGuide);
+
 	},
 	createCanvas: function() {
 		this.canvas = document.createElement('canvas');
@@ -100,6 +110,7 @@ var guides = {
 			horizontals,
 			l_verticals,
 			l_horizontals,
+			displayStatus,
 			i;
 		if (!oldGuides) {
 			return;
@@ -113,6 +124,8 @@ var guides = {
 		horizontals = oldGuides[1].split(',');
 		l_horizontals = horizontals.length;
 
+		displayStatus = oldGuides[2];
+
 		for (i = 1; i < l_verticals; i ++) {
 			if (verticals[i]) {
 				this.activeGuidesVertical.push(Number(verticals[i]));
@@ -123,6 +136,13 @@ var guides = {
 				this.activeGuidesHorizontal.push(Number(horizontals[i]));
 			}
 		}
+
+		if (displayStatus === 'show') {
+			this.show();
+		} else if (displayStatus === 'hide') {
+			this.hide();
+		}
+
 		this.redrawAll();
 	},
 	drawGuide: function(position, axis) {
@@ -291,7 +311,8 @@ var guides = {
 			if (!guides.activeGuidesVertical.length && !guides.activeGuidesHorizontal.length) {
 				guidesHash = '';
 			} else {
-				guidesHash = 'V,' + guides.activeGuidesVertical.toString() + ';H,' + guides.activeGuidesHorizontal.toString();
+				var displayStatus = guides.isVisible ? 'show' : 'hide';
+				guidesHash = 'V,' + guides.activeGuidesVertical.toString() + ';H,' + guides.activeGuidesHorizontal.toString() + ';' + displayStatus;
 			}
 			if (window.history.replaceState) {
 				window.history.replaceState({}, document.title, window.location.href.replace(window.location.hash, '') + '#' + guidesHash);
@@ -353,17 +374,26 @@ var guides = {
 	},
 	handleControlPanel: function(event) {
 		if (event.target.id === "GuideToggle") {
-			if (guides.canvas.style.display !== 'none') {
-				guides.canvas.style.display = "none";
-				document.getElementById('GuideClearAll').style.display = 'none';
+			if (guides.isVisible) {
+				guides.isVisible = false;
+				guides.hide();
 			} else {
-				guides.canvas.style.display = "";
-				document.getElementById('GuideClearAll').style.display = 'block';
+				guides.isVisible = true;
+				guides.show();
 			}
 		} else if (event.target.id === "GuideClearAll") {
 			guides.clearAllGuides();
 		}
-
+	},
+	show: function(event) {
+		this.canvas.style.display = "";
+		document.getElementById('GuideClearAll').style.display = 'block';
+		document.getElementById('GuideNew').style.display = 'block';
+	},
+	hide: function(event) {
+		this.canvas.style.display = "none";
+		document.getElementById('GuideClearAll').style.display = 'none';
+		document.getElementById('GuideNew').style.display = 'none';
 	}
 }
 guides.init();
