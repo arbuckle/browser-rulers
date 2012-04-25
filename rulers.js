@@ -138,6 +138,7 @@ var guides = {
 		}
 
 		if (displayStatus === 'show') {
+			this.isVisible = true;
 			this.show();
 		} else if (displayStatus === 'hide') {
 			this.hide();
@@ -244,13 +245,17 @@ var guides = {
 	clearCanvas: function() {
 		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 	},
-	newGuide: function(type) {
+	newGuide: function(type, position) {
 		if (type === 'vertical') {
-			var position = this.mouseX;
+			if (!position) {
+				position = this.mouseX;
+			}
 			this.drawGuide(position, 'vertical');
 			this.activeGuidesVertical.push(position);
 		} else if (type === 'horizontal') {
-			var position = this.mouseY;
+			if (!position) {
+				position = this.mouseY;
+			}
 			this.drawGuide(position, 'horizontal');
 			this.activeGuidesHorizontal.push(position);
 		}
@@ -383,6 +388,14 @@ var guides = {
 			}
 		} else if (event.target.id === "GuideClearAll") {
 			guides.clearAllGuides();
+		} else if (event.target.id === "GuideNew") {
+			var customGuide = prompt('Create New Guide\n\n "v150" - 150px vertical guide\n "h150" - 150px horizontal guide'),
+				orientation = customGuide.substr(0,1),
+				position = Number(customGuide.substr(1));
+
+			orientation = (orientation.toUpperCase() == 'V') ? 'vertical' : 'horizontal';
+
+			guides.newGuide(orientation, position);
 		}
 	},
 	show: function(event) {
