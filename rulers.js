@@ -63,7 +63,7 @@ var guides = {
 	createControlPanel: function() {
 		var style = document.createElement('style');
 		style.innerHTML =	"#GuideToggle {position: fixed; top: 0; left: 0; width: 20px; height: 20px; background-color: #5e5e5e; z-index: 1000;}" +
-							"#GuideClearAll {position: fixed; top: 0; right: 0; width: 20px; height: 20px; background-color: rgba(255, 0, 0, 0.75); z-index: 1000;}";
+							"#GuideClearAll {display:none; position: fixed; top: 0; right: 0; width: 20px; height: 20px; background-color: rgba(255, 0, 0, 0.75); z-index: 1000;}";
 		document.body.appendChild(style);
 
 		this.cpToggle = document.createElement('div');
