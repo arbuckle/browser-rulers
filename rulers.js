@@ -87,6 +87,7 @@ var guides = {
 		this.canvas.style.position = 'absolute';
 		this.canvas.style.top = 0;
 		this.canvas.style.left = 0;
+		this.canvas.style.pointerEvents = 'none';
 		this.canvas.style.zIndex = 999;
 
 		document.body.appendChild(this.canvas);
@@ -210,7 +211,11 @@ var guides = {
 		this.drawRuler();
 	},
 	clearAllGuides: function() {
-		window.history.replaceState({}, document.title, window.location.href.replace(window.location.hash, ''));
+		if (window.history.replaceState) {
+			window.history.replaceState({}, document.title, window.location.href.replace(window.location.hash, ''));
+		} else {
+			 window.location.hash = '';
+		}
 		this.activeGuidesVertical = [];
 		this.activeGuidesHorizontal = [];
 		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -240,10 +245,12 @@ var guides = {
 	},
 	guideDragHandler: function(event) {
 		if (guides.dragging) {
+			guides.canvas.style.pointerEvents = 'auto';
 			var point = guides.dragType === 'horizontal' ? guides.mouseY : guides.mouseX;
 			guides.clearCanvas();
 			guides.drawGuide(point, guides.dragType);
 			guides.redrawAll();
+			return;
 		}
 
 		/* guide boundaries are 3px to either side.  similar code in guideDragStart */
@@ -253,22 +260,27 @@ var guides = {
 			|| guides.activeGuidesVertical.indexOf(guides.mouseX - 3) !== -1
 			|| guides.activeGuidesVertical.indexOf(guides.mouseX + 1) !== -1
 			|| guides.activeGuidesVertical.indexOf(guides.mouseX + 2) !== -1
-			|| guides.activeGuidesVertical.indexOf(guides.mouseX + 3) !== -1
-			|| guides.activeGuidesHorizontal.indexOf(guides.mouseY) !== -1
+			|| guides.activeGuidesVertical.indexOf(guides.mouseX + 3) !== -1) {
+			guides.canvas.style.cursor = 'col-resize';
+			guides.canvas.style.pointerEvents = 'auto';
+		} else if (guides.activeGuidesHorizontal.indexOf(guides.mouseY) !== -1
 			|| guides.activeGuidesHorizontal.indexOf(guides.mouseY - 1) !== -1
 			|| guides.activeGuidesHorizontal.indexOf(guides.mouseY - 2) !== -1
 			|| guides.activeGuidesHorizontal.indexOf(guides.mouseY - 3) !== -1
 			|| guides.activeGuidesHorizontal.indexOf(guides.mouseY + 1) !== -1
 			|| guides.activeGuidesHorizontal.indexOf(guides.mouseY + 2) !== -1
 			|| guides.activeGuidesHorizontal.indexOf(guides.mouseY + 3) !== -1) {
-			guides.canvas.style.cursor = 'pointer';
+			guides.canvas.style.cursor = 'row-resize';
+			guides.canvas.style.pointerEvents = 'auto';
 		} else {
 			guides.canvas.style.cursor = 'auto';
+			guides.canvas.style.pointerEvents = 'none';
 		}
 	},
 	guideDragStop: function(event){
 		if (guides.dragging) {
 			guides.dragging = false;
+			guides.canvas.style.pointerEvents = 'none';
 			if (guides.dragType === 'horizontal' && event.clientY > 20 && event.clientX > 20) {
 				guides.activeGuidesHorizontal.push(guides.mouseY);
 			} else if (guides.dragType === 'vertical' && event.clientY > 20 && event.clientX > 20) {
@@ -279,10 +291,13 @@ var guides = {
 			if (!guides.activeGuidesVertical.length && !guides.activeGuidesHorizontal.length) {
 				guidesHash = '';
 			} else {
-				guidesHash = '#V,' + guides.activeGuidesVertical.toString() + ';H,' + guides.activeGuidesHorizontal.toString();
+				guidesHash = 'V,' + guides.activeGuidesVertical.toString() + ';H,' + guides.activeGuidesHorizontal.toString();
 			}
-
-			window.history.replaceState({}, document.title, window.location.href.replace(window.location.hash, '') + guidesHash);
+			if (window.history.replaceState) {
+				window.history.replaceState({}, document.title, window.location.href.replace(window.location.hash, '') + '#' + guidesHash);
+			} else {
+				 window.location.hash = guidesHash;
+			}
 		}
 		guides.clearCanvas();
 		guides.redrawAll();
