@@ -113,10 +113,14 @@ var guides = {
 		l_horizontals = horizontals.length;
 
 		for (i = 1; i < l_verticals; i ++) {
-			this.activeGuidesVertical.push(Number(verticals[i]));
+			if (verticals[i]) {
+				this.activeGuidesVertical.push(Number(verticals[i]));
+			}
 		}
 		for (i = 1; i < l_horizontals; i ++) {
-			this.activeGuidesHorizontal.push(Number(horizontals[i]));
+			if (horizontals[i]) {
+				this.activeGuidesHorizontal.push(Number(horizontals[i]));
+			}
 		}
 		this.redrawAll();
 	},
