@@ -206,7 +206,7 @@ var guides = {
 		this.drawRuler();
 	},
 	clearAllGuides: function() {
-		window.location.hash = '';
+		window.history.replaceState({}, document.title, window.location.href.replace(window.location.hash, ''));
 		this.activeGuidesVertical = [];
 		this.activeGuidesHorizontal = [];
 		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -270,7 +270,15 @@ var guides = {
 			} else if (guides.dragType === 'vertical' && event.clientY > 20 && event.clientX > 20) {
 				guides.activeGuidesVertical.push(guides.mouseX);
 			}
-			window.location.hash = 'V,' + guides.activeGuidesVertical.toString() + ';H,' + guides.activeGuidesHorizontal.toString();
+
+			var guidesHash;
+			if (!guides.activeGuidesVertical.length && !guides.activeGuidesHorizontal.length) {
+				guidesHash = '';
+			} else {
+				guidesHash = '#V,' + guides.activeGuidesVertical.toString() + ';H,' + guides.activeGuidesHorizontal.toString();
+			}
+
+			window.history.replaceState({}, document.title, window.location.href.replace(window.location.hash, '') + guidesHash);
 		}
 		guides.clearCanvas();
 		guides.redrawAll();
