@@ -279,7 +279,9 @@ var guides = {
 		}
 
 		/* guide boundaries are 3px to either side.  similar code in guideDragStart */
-		if (guides.activeGuidesVertical.indexOf(guides.mouseX) !== -1
+		if (event.clientX < 20 || event.clientY < 20) {
+			guides.canvas.style.pointerEvents = 'auto';
+		} else if (guides.activeGuidesVertical.indexOf(guides.mouseX) !== -1
 			|| guides.activeGuidesVertical.indexOf(guides.mouseX - 1) !== -1
 			|| guides.activeGuidesVertical.indexOf(guides.mouseX - 2) !== -1
 			|| guides.activeGuidesVertical.indexOf(guides.mouseX - 3) !== -1
