@@ -260,6 +260,21 @@ var guides = {
 			this.activeGuidesHorizontal.push(position);
 		}
 	},
+	setURLHash: function() {
+		var guidesHash;
+		if (!this.activeGuidesVertical.length && !this.activeGuidesHorizontal.length) {
+			guidesHash = '';
+		} else {
+			var displayStatus = this.isVisible ? 'show' : 'hide';
+			alert(displayStatus)
+			guidesHash = 'V,' + this.activeGuidesVertical.toString() + ';H,' + this.activeGuidesHorizontal.toString() + ';' + displayStatus;
+		}
+		if (window.history.replaceState) {
+			window.history.replaceState({}, document.title, window.location.href.replace(window.location.hash, '') + '#' + guidesHash);
+		} else {
+			 window.location.hash = guidesHash;
+		}
+	},
 	scrollHandler: function(event) {
 		guides.clearCanvas();
 		guides.redrawAll();
@@ -313,19 +328,7 @@ var guides = {
 			} else if (guides.dragType === 'vertical' && event.clientY > 20 && event.clientX > 20) {
 				guides.activeGuidesVertical.push(guides.mouseX);
 			}
-
-			var guidesHash;
-			if (!guides.activeGuidesVertical.length && !guides.activeGuidesHorizontal.length) {
-				guidesHash = '';
-			} else {
-				var displayStatus = guides.isVisible ? 'show' : 'hide';
-				guidesHash = 'V,' + guides.activeGuidesVertical.toString() + ';H,' + guides.activeGuidesHorizontal.toString() + ';' + displayStatus;
-			}
-			if (window.history.replaceState) {
-				window.history.replaceState({}, document.title, window.location.href.replace(window.location.hash, '') + '#' + guidesHash);
-			} else {
-				 window.location.hash = guidesHash;
-			}
+			guides.setURLHash();
 		}
 		guides.clearCanvas();
 		guides.redrawAll();
@@ -404,11 +407,13 @@ var guides = {
 		this.canvas.style.display = "";
 		document.getElementById('GuideClearAll').style.display = 'block';
 		document.getElementById('GuideNew').style.display = 'block';
+		this.setURLHash();
 	},
 	hide: function(event) {
 		this.canvas.style.display = "none";
 		document.getElementById('GuideClearAll').style.display = 'none';
 		document.getElementById('GuideNew').style.display = 'none';
+		this.setURLHash();
 	}
 }
 guides.init();
