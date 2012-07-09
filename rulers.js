@@ -266,7 +266,6 @@ var guides = {
 			guidesHash = '';
 		} else {
 			var displayStatus = this.isVisible ? 'show' : 'hide';
-			alert(displayStatus)
 			guidesHash = 'V,' + this.activeGuidesVertical.toString() + ';H,' + this.activeGuidesHorizontal.toString() + ';' + displayStatus;
 		}
 		if (window.history.replaceState) {
